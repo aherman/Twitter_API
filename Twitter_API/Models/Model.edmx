@@ -1,0 +1,1335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TwitterDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Conversations">
+          <Key>
+            <PropertyRef Name="ConversationID" />
+          </Key>
+          <Property Name="ConversationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User1ID" Type="int" Nullable="false" />
+          <Property Name="User2ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="CountryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DirectMessages">
+          <Key>
+            <PropertyRef Name="DirectMessageID" />
+          </Key>
+          <Property Name="DirectMessageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SenderID" Type="int" Nullable="false" />
+          <Property Name="ReceiverID" Type="int" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="Content" Type="text" Nullable="false" />
+          <Property Name="ConversationID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Favorites">
+          <Key>
+            <PropertyRef Name="FavoriteID" />
+          </Key>
+          <Property Name="FavoriteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TweetID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="FavoriteTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FavoriteTweets">
+          <Key>
+            <PropertyRef Name="FavoriteTweetID" />
+          </Key>
+          <Property Name="FavoriteTweetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TweetID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Mentions">
+          <Key>
+            <PropertyRef Name="MentionID" />
+          </Key>
+          <Property Name="MentionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="TweetID" Type="int" Nullable="false" />
+          <Property Name="TweetMentionID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Retweets">
+          <Key>
+            <PropertyRef Name="RetweetID" />
+          </Key>
+          <Property Name="RetweetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="TweetID" Type="int" Nullable="false" />
+          <Property Name="RetweetTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tweets">
+          <Key>
+            <PropertyRef Name="TweetID" />
+          </Key>
+          <Property Name="TweetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Content" Type="nvarchar" MaxLength="160" Nullable="false" />
+          <Property Name="TweetImg" Type="varchar(max)" />
+          <Property Name="TweetDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nickname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BirthDate" Type="datetime" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="ProfileImage" Type="varchar(max)" />
+          <Property Name="HeaderImage" Type="varchar(max)" />
+          <Property Name="CountryID" Type="int" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UsersFollowing">
+          <Key>
+            <PropertyRef Name="FollowingID" />
+            <PropertyRef Name="FollowerID" />
+          </Key>
+          <Property Name="FollowingID" Type="int" Nullable="false" />
+          <Property Name="FollowerID" Type="int" Nullable="false" />
+          <Property Name="DateModified" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_DirectMessages_ConversationID">
+          <End Role="Conversations" Type="Self.Conversations" Multiplicity="1" />
+          <End Role="DirectMessages" Type="Self.DirectMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conversations">
+              <PropertyRef Name="ConversationID" />
+            </Principal>
+            <Dependent Role="DirectMessages">
+              <PropertyRef Name="ConversationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_DirectMessages_ReceiverID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="DirectMessages" Type="Self.DirectMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="DirectMessages">
+              <PropertyRef Name="ReceiverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_DirectMessages_SenderID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="DirectMessages" Type="Self.DirectMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="DirectMessages">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_DirectMessages_User1ID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Conversations" Type="Self.Conversations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Conversations">
+              <PropertyRef Name="User1ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_DirectMessages_User2ID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Conversations" Type="Self.Conversations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Conversations">
+              <PropertyRef Name="User2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Favorites_TweetID">
+          <End Role="Tweets" Type="Self.Tweets" Multiplicity="1" />
+          <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tweets">
+              <PropertyRef Name="TweetID" />
+            </Principal>
+            <Dependent Role="Favorites">
+              <PropertyRef Name="TweetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Favorites_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Favorites">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_FavoriteTweets_TweetID">
+          <End Role="Tweets" Type="Self.Tweets" Multiplicity="1" />
+          <End Role="FavoriteTweets" Type="Self.FavoriteTweets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tweets">
+              <PropertyRef Name="TweetID" />
+            </Principal>
+            <Dependent Role="FavoriteTweets">
+              <PropertyRef Name="TweetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_FavoriteTweets_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="FavoriteTweets" Type="Self.FavoriteTweets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="FavoriteTweets">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Mentions_TweetID">
+          <End Role="Tweets" Type="Self.Tweets" Multiplicity="1" />
+          <End Role="Mentions" Type="Self.Mentions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tweets">
+              <PropertyRef Name="TweetID" />
+            </Principal>
+            <Dependent Role="Mentions">
+              <PropertyRef Name="TweetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Mentions_TweetMentionID">
+          <End Role="Tweets" Type="Self.Tweets" Multiplicity="1" />
+          <End Role="Mentions" Type="Self.Mentions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tweets">
+              <PropertyRef Name="TweetID" />
+            </Principal>
+            <Dependent Role="Mentions">
+              <PropertyRef Name="TweetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Mentions_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Mentions" Type="Self.Mentions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Mentions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Retweets_TweetID">
+          <End Role="Tweets" Type="Self.Tweets" Multiplicity="1" />
+          <End Role="Retweets" Type="Self.Retweets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tweets">
+              <PropertyRef Name="TweetID" />
+            </Principal>
+            <Dependent Role="Retweets">
+              <PropertyRef Name="TweetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Retweets_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Retweets" Type="Self.Retweets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Retweets">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Tweets_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Tweets" Type="Self.Tweets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Tweets">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Users_CountryID">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UsersFollowing_FollowerID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UsersFollowing" Type="Self.UsersFollowing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UsersFollowing">
+              <PropertyRef Name="FollowerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UsersFollowing_FollowingID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UsersFollowing" Type="Self.UsersFollowing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UsersFollowing">
+              <PropertyRef Name="FollowingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="tsp_AllTweets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="tsp_AllTweetsEveryone" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="tsp_Engagements" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="tsp_FavoriteTweets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="tsp_getConversationDM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="conversationID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="tsp_GetTweet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tweetID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="tsp_LatestMessage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user1ID" Type="int" Mode="In" />
+          <Parameter Name="user2ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="tsp_ReplyCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="tsp_UserLikedTweets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="tsp_UserMentions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="tsp_UserTweets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="tsp_WordCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="word" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <EntityContainer Name="TwitterDBModelStoreContainer">
+          <EntitySet Name="Conversations" EntityType="Self.Conversations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DirectMessages" EntityType="Self.DirectMessages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Favorites" EntityType="Self.Favorites" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FavoriteTweets" EntityType="Self.FavoriteTweets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mentions" EntityType="Self.Mentions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Retweets" EntityType="Self.Retweets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tweets" EntityType="Self.Tweets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsersFollowing" EntityType="Self.UsersFollowing" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_DirectMessages_ConversationID" Association="Self.fk_DirectMessages_ConversationID">
+            <End Role="Conversations" EntitySet="Conversations" />
+            <End Role="DirectMessages" EntitySet="DirectMessages" />
+          </AssociationSet>
+          <AssociationSet Name="fk_DirectMessages_ReceiverID" Association="Self.fk_DirectMessages_ReceiverID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DirectMessages" EntitySet="DirectMessages" />
+          </AssociationSet>
+          <AssociationSet Name="fk_DirectMessages_SenderID" Association="Self.fk_DirectMessages_SenderID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DirectMessages" EntitySet="DirectMessages" />
+          </AssociationSet>
+          <AssociationSet Name="fk_DirectMessages_User1ID" Association="Self.fk_DirectMessages_User1ID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Conversations" EntitySet="Conversations" />
+          </AssociationSet>
+          <AssociationSet Name="fk_DirectMessages_User2ID" Association="Self.fk_DirectMessages_User2ID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Conversations" EntitySet="Conversations" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Favorites_TweetID" Association="Self.fk_Favorites_TweetID">
+            <End Role="Tweets" EntitySet="Tweets" />
+            <End Role="Favorites" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Favorites_UserID" Association="Self.fk_Favorites_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Favorites" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="fk_FavoriteTweets_TweetID" Association="Self.fk_FavoriteTweets_TweetID">
+            <End Role="Tweets" EntitySet="Tweets" />
+            <End Role="FavoriteTweets" EntitySet="FavoriteTweets" />
+          </AssociationSet>
+          <AssociationSet Name="fk_FavoriteTweets_UserID" Association="Self.fk_FavoriteTweets_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FavoriteTweets" EntitySet="FavoriteTweets" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Mentions_TweetID" Association="Self.fk_Mentions_TweetID">
+            <End Role="Tweets" EntitySet="Tweets" />
+            <End Role="Mentions" EntitySet="Mentions" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Mentions_TweetMentionID" Association="Self.fk_Mentions_TweetMentionID">
+            <End Role="Tweets" EntitySet="Tweets" />
+            <End Role="Mentions" EntitySet="Mentions" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Mentions_UserID" Association="Self.fk_Mentions_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Mentions" EntitySet="Mentions" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Retweets_TweetID" Association="Self.fk_Retweets_TweetID">
+            <End Role="Tweets" EntitySet="Tweets" />
+            <End Role="Retweets" EntitySet="Retweets" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Retweets_UserID" Association="Self.fk_Retweets_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Retweets" EntitySet="Retweets" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Tweets_UserID" Association="Self.fk_Tweets_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Tweets" EntitySet="Tweets" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Users_CountryID" Association="Self.fk_Users_CountryID">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UsersFollowing_FollowerID" Association="Self.fk_UsersFollowing_FollowerID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersFollowing" EntitySet="UsersFollowing" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UsersFollowing_FollowingID" Association="Self.fk_UsersFollowing_FollowingID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersFollowing" EntitySet="UsersFollowing" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TwitterDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Conversations">
+          <Key>
+            <PropertyRef Name="ConversationID" />
+          </Key>
+          <Property Name="ConversationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User1ID" Type="Int32" Nullable="false" />
+          <Property Name="User2ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DirectMessages" Relationship="Self.fk_DirectMessages_ConversationID" FromRole="Conversations" ToRole="DirectMessages" />
+          <NavigationProperty Name="Users" Relationship="Self.fk_DirectMessages_User1ID" FromRole="Conversations" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="Self.fk_DirectMessages_User2ID" FromRole="Conversations" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="CountryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CountryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.fk_Users_CountryID" FromRole="Countries" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="DirectMessages">
+          <Key>
+            <PropertyRef Name="DirectMessageID" />
+          </Key>
+          <Property Name="DirectMessageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SenderID" Type="Int32" Nullable="false" />
+          <Property Name="ReceiverID" Type="Int32" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ConversationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Conversations" Relationship="Self.fk_DirectMessages_ConversationID" FromRole="DirectMessages" ToRole="Conversations" />
+          <NavigationProperty Name="Users" Relationship="Self.fk_DirectMessages_ReceiverID" FromRole="DirectMessages" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="Self.fk_DirectMessages_SenderID" FromRole="DirectMessages" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Favorites">
+          <Key>
+            <PropertyRef Name="FavoriteID" />
+          </Key>
+          <Property Name="FavoriteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TweetID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="FavoriteTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Tweets" Relationship="Self.fk_Favorites_TweetID" FromRole="Favorites" ToRole="Tweets" />
+          <NavigationProperty Name="Users" Relationship="Self.fk_Favorites_UserID" FromRole="Favorites" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="FavoriteTweets">
+          <Key>
+            <PropertyRef Name="FavoriteTweetID" />
+          </Key>
+          <Property Name="FavoriteTweetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TweetID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tweets" Relationship="Self.fk_FavoriteTweets_TweetID" FromRole="FavoriteTweets" ToRole="Tweets" />
+          <NavigationProperty Name="Users" Relationship="Self.fk_FavoriteTweets_UserID" FromRole="FavoriteTweets" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Mentions">
+          <Key>
+            <PropertyRef Name="MentionID" />
+          </Key>
+          <Property Name="MentionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="TweetID" Type="Int32" Nullable="false" />
+          <Property Name="TweetMentionID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tweets" Relationship="Self.fk_Mentions_TweetID" FromRole="Mentions" ToRole="Tweets" />
+          <NavigationProperty Name="Tweets1" Relationship="Self.fk_Mentions_TweetMentionID" FromRole="Mentions" ToRole="Tweets" />
+          <NavigationProperty Name="Users" Relationship="Self.fk_Mentions_UserID" FromRole="Mentions" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Retweets">
+          <Key>
+            <PropertyRef Name="RetweetID" />
+          </Key>
+          <Property Name="RetweetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="TweetID" Type="Int32" Nullable="false" />
+          <Property Name="RetweetTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Tweets" Relationship="Self.fk_Retweets_TweetID" FromRole="Retweets" ToRole="Tweets" />
+          <NavigationProperty Name="Users" Relationship="Self.fk_Retweets_UserID" FromRole="Retweets" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Tweets">
+          <Key>
+            <PropertyRef Name="TweetID" />
+          </Key>
+          <Property Name="TweetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Content" Type="String" MaxLength="160" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TweetImg" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TweetDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Favorites" Relationship="Self.fk_Favorites_TweetID" FromRole="Tweets" ToRole="Favorites" />
+          <NavigationProperty Name="FavoriteTweets" Relationship="Self.fk_FavoriteTweets_TweetID" FromRole="Tweets" ToRole="FavoriteTweets" />
+          <NavigationProperty Name="Mentions" Relationship="Self.fk_Mentions_TweetID" FromRole="Tweets" ToRole="Mentions" />
+          <NavigationProperty Name="Mentions1" Relationship="Self.fk_Mentions_TweetMentionID" FromRole="Tweets" ToRole="Mentions" />
+          <NavigationProperty Name="Retweets" Relationship="Self.fk_Retweets_TweetID" FromRole="Tweets" ToRole="Retweets" />
+          <NavigationProperty Name="Users" Relationship="Self.fk_Tweets_UserID" FromRole="Tweets" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Nickname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ProfileImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="HeaderImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CountryID" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Conversations" Relationship="Self.fk_DirectMessages_User1ID" FromRole="Users" ToRole="Conversations" />
+          <NavigationProperty Name="Conversations1" Relationship="Self.fk_DirectMessages_User2ID" FromRole="Users" ToRole="Conversations" />
+          <NavigationProperty Name="Countries" Relationship="Self.fk_Users_CountryID" FromRole="Users" ToRole="Countries" />
+          <NavigationProperty Name="DirectMessages" Relationship="Self.fk_DirectMessages_ReceiverID" FromRole="Users" ToRole="DirectMessages" />
+          <NavigationProperty Name="DirectMessages1" Relationship="Self.fk_DirectMessages_SenderID" FromRole="Users" ToRole="DirectMessages" />
+          <NavigationProperty Name="Favorites" Relationship="Self.fk_Favorites_UserID" FromRole="Users" ToRole="Favorites" />
+          <NavigationProperty Name="FavoriteTweets" Relationship="Self.fk_FavoriteTweets_UserID" FromRole="Users" ToRole="FavoriteTweets" />
+          <NavigationProperty Name="Mentions" Relationship="Self.fk_Mentions_UserID" FromRole="Users" ToRole="Mentions" />
+          <NavigationProperty Name="Retweets" Relationship="Self.fk_Retweets_UserID" FromRole="Users" ToRole="Retweets" />
+          <NavigationProperty Name="Tweets" Relationship="Self.fk_Tweets_UserID" FromRole="Users" ToRole="Tweets" />
+          <NavigationProperty Name="UsersFollowing" Relationship="Self.fk_UsersFollowing_FollowerID" FromRole="Users" ToRole="UsersFollowing" />
+          <NavigationProperty Name="UsersFollowing1" Relationship="Self.fk_UsersFollowing_FollowingID" FromRole="Users" ToRole="UsersFollowing" />
+        </EntityType>
+        <EntityType Name="UsersFollowing">
+          <Key>
+            <PropertyRef Name="FollowingID" />
+            <PropertyRef Name="FollowerID" />
+          </Key>
+          <Property Name="FollowingID" Type="Int32" Nullable="false" />
+          <Property Name="FollowerID" Type="Int32" Nullable="false" />
+          <Property Name="DateModified" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Users" Relationship="Self.fk_UsersFollowing_FollowerID" FromRole="UsersFollowing" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="Self.fk_UsersFollowing_FollowingID" FromRole="UsersFollowing" ToRole="Users" />
+        </EntityType>
+        <Association Name="fk_DirectMessages_ConversationID">
+          <End Role="Conversations" Type="Self.Conversations" Multiplicity="1" />
+          <End Role="DirectMessages" Type="Self.DirectMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conversations">
+              <PropertyRef Name="ConversationID" />
+            </Principal>
+            <Dependent Role="DirectMessages">
+              <PropertyRef Name="ConversationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_DirectMessages_User1ID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Conversations" Type="Self.Conversations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Conversations">
+              <PropertyRef Name="User1ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_DirectMessages_User2ID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Conversations" Type="Self.Conversations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Conversations">
+              <PropertyRef Name="User2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Users_CountryID">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_DirectMessages_ReceiverID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="DirectMessages" Type="Self.DirectMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="DirectMessages">
+              <PropertyRef Name="ReceiverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_DirectMessages_SenderID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="DirectMessages" Type="Self.DirectMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="DirectMessages">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Favorites_TweetID">
+          <End Role="Tweets" Type="Self.Tweets" Multiplicity="1" />
+          <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tweets">
+              <PropertyRef Name="TweetID" />
+            </Principal>
+            <Dependent Role="Favorites">
+              <PropertyRef Name="TweetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Favorites_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Favorites">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_FavoriteTweets_TweetID">
+          <End Role="Tweets" Type="Self.Tweets" Multiplicity="1" />
+          <End Role="FavoriteTweets" Type="Self.FavoriteTweets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tweets">
+              <PropertyRef Name="TweetID" />
+            </Principal>
+            <Dependent Role="FavoriteTweets">
+              <PropertyRef Name="TweetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_FavoriteTweets_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="FavoriteTweets" Type="Self.FavoriteTweets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="FavoriteTweets">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Mentions_TweetID">
+          <End Role="Tweets" Type="Self.Tweets" Multiplicity="1" />
+          <End Role="Mentions" Type="Self.Mentions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tweets">
+              <PropertyRef Name="TweetID" />
+            </Principal>
+            <Dependent Role="Mentions">
+              <PropertyRef Name="TweetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Mentions_TweetMentionID">
+          <End Role="Tweets" Type="Self.Tweets" Multiplicity="1" />
+          <End Role="Mentions" Type="Self.Mentions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tweets">
+              <PropertyRef Name="TweetID" />
+            </Principal>
+            <Dependent Role="Mentions">
+              <PropertyRef Name="TweetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Mentions_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Mentions" Type="Self.Mentions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Mentions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Retweets_TweetID">
+          <End Role="Tweets" Type="Self.Tweets" Multiplicity="1" />
+          <End Role="Retweets" Type="Self.Retweets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tweets">
+              <PropertyRef Name="TweetID" />
+            </Principal>
+            <Dependent Role="Retweets">
+              <PropertyRef Name="TweetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Retweets_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Retweets" Type="Self.Retweets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Retweets">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Tweets_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Tweets" Type="Self.Tweets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Tweets">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UsersFollowing_FollowerID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UsersFollowing" Type="Self.UsersFollowing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UsersFollowing">
+              <PropertyRef Name="FollowerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UsersFollowing_FollowingID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UsersFollowing" Type="Self.UsersFollowing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UsersFollowing">
+              <PropertyRef Name="FollowingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TwitterDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Conversations" EntityType="Self.Conversations" />
+          <EntitySet Name="Countries" EntityType="Self.Countries" />
+          <EntitySet Name="DirectMessages" EntityType="Self.DirectMessages" />
+          <EntitySet Name="Favorites" EntityType="Self.Favorites" />
+          <EntitySet Name="FavoriteTweets" EntityType="Self.FavoriteTweets" />
+          <EntitySet Name="Mentions" EntityType="Self.Mentions" />
+          <EntitySet Name="Retweets" EntityType="Self.Retweets" />
+          <EntitySet Name="Tweets" EntityType="Self.Tweets" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="UsersFollowing" EntityType="Self.UsersFollowing" />
+          <AssociationSet Name="fk_DirectMessages_ConversationID" Association="Self.fk_DirectMessages_ConversationID">
+            <End Role="Conversations" EntitySet="Conversations" />
+            <End Role="DirectMessages" EntitySet="DirectMessages" />
+          </AssociationSet>
+          <AssociationSet Name="fk_DirectMessages_User1ID" Association="Self.fk_DirectMessages_User1ID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Conversations" EntitySet="Conversations" />
+          </AssociationSet>
+          <AssociationSet Name="fk_DirectMessages_User2ID" Association="Self.fk_DirectMessages_User2ID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Conversations" EntitySet="Conversations" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Users_CountryID" Association="Self.fk_Users_CountryID">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="fk_DirectMessages_ReceiverID" Association="Self.fk_DirectMessages_ReceiverID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DirectMessages" EntitySet="DirectMessages" />
+          </AssociationSet>
+          <AssociationSet Name="fk_DirectMessages_SenderID" Association="Self.fk_DirectMessages_SenderID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DirectMessages" EntitySet="DirectMessages" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Favorites_TweetID" Association="Self.fk_Favorites_TweetID">
+            <End Role="Tweets" EntitySet="Tweets" />
+            <End Role="Favorites" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Favorites_UserID" Association="Self.fk_Favorites_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Favorites" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="fk_FavoriteTweets_TweetID" Association="Self.fk_FavoriteTweets_TweetID">
+            <End Role="Tweets" EntitySet="Tweets" />
+            <End Role="FavoriteTweets" EntitySet="FavoriteTweets" />
+          </AssociationSet>
+          <AssociationSet Name="fk_FavoriteTweets_UserID" Association="Self.fk_FavoriteTweets_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FavoriteTweets" EntitySet="FavoriteTweets" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Mentions_TweetID" Association="Self.fk_Mentions_TweetID">
+            <End Role="Tweets" EntitySet="Tweets" />
+            <End Role="Mentions" EntitySet="Mentions" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Mentions_TweetMentionID" Association="Self.fk_Mentions_TweetMentionID">
+            <End Role="Tweets" EntitySet="Tweets" />
+            <End Role="Mentions" EntitySet="Mentions" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Mentions_UserID" Association="Self.fk_Mentions_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Mentions" EntitySet="Mentions" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Retweets_TweetID" Association="Self.fk_Retweets_TweetID">
+            <End Role="Tweets" EntitySet="Tweets" />
+            <End Role="Retweets" EntitySet="Retweets" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Retweets_UserID" Association="Self.fk_Retweets_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Retweets" EntitySet="Retweets" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Tweets_UserID" Association="Self.fk_Tweets_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Tweets" EntitySet="Tweets" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UsersFollowing_FollowerID" Association="Self.fk_UsersFollowing_FollowerID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersFollowing" EntitySet="UsersFollowing" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UsersFollowing_FollowingID" Association="Self.fk_UsersFollowing_FollowingID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersFollowing" EntitySet="UsersFollowing" />
+          </AssociationSet>
+          <FunctionImport Name="tsp_AllTweets" ReturnType="Collection(TwitterDBModel.tsp_AllTweets_Result)">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="tsp_AllTweetsEveryone" ReturnType="Collection(TwitterDBModel.tsp_AllTweetsEveryone_Result)" />
+          <FunctionImport Name="tsp_Engagements" ReturnType="Collection(TwitterDBModel.tsp_Engagements_Result)">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="tsp_FavoriteTweets" ReturnType="Collection(TwitterDBModel.tsp_FavoriteTweets_Result)">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="tsp_getConversationDM" ReturnType="Collection(TwitterDBModel.tsp_getConversationDM_Result)">
+            <Parameter Name="conversationID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="tsp_GetTweet" ReturnType="Collection(TwitterDBModel.tsp_GetTweet_Result)">
+            <Parameter Name="tweetID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="tsp_LatestMessage" ReturnType="Collection(TwitterDBModel.tsp_LatestMessage_Result)">
+            <Parameter Name="user1ID" Mode="In" Type="Int32" />
+            <Parameter Name="user2ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="tsp_ReplyCount" ReturnType="Collection(TwitterDBModel.tsp_ReplyCount_Result)" />
+          <FunctionImport Name="tsp_UserLikedTweets" ReturnType="Collection(TwitterDBModel.tsp_UserLikedTweets_Result)">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="tsp_UserMentions" ReturnType="Collection(TwitterDBModel.tsp_UserMentions_Result)">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="tsp_UserTweets" ReturnType="Collection(TwitterDBModel.tsp_UserTweets_Result)">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="tsp_WordCount" ReturnType="Collection(TwitterDBModel.tsp_WordCount_Result)">
+            <Parameter Name="word" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="tsp_AllTweets_Result">
+          <Property Type="Int32" Name="UserID" Nullable="true" />
+          <Property Type="Int32" Name="TweetID" Nullable="true" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Nickname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Content" Nullable="true" MaxLength="160" />
+          <Property Type="DateTime" Name="TweetDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ProfileImage" Nullable="true" />
+          <Property Type="String" Name="TweetImg" Nullable="true" />
+          <Property Type="Int32" Name="likeCount" Nullable="true" />
+          <Property Type="Int32" Name="retweetCount" Nullable="true" />
+          <Property Type="String" Name="ParentTweetUsername" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="replyUserID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="tsp_AllTweetsEveryone_Result">
+          <Property Type="Int32" Name="UserID" Nullable="true" />
+          <Property Type="Int32" Name="TweetID" Nullable="true" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Nickname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="TweetImg" Nullable="true" />
+          <Property Type="String" Name="Content" Nullable="true" />
+          <Property Type="DateTime" Name="TweetDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ProfileImage" Nullable="true" />
+          <Property Type="Int32" Name="likeCount" Nullable="true" />
+          <Property Type="Int32" Name="retweetCount" Nullable="true" />
+          <Property Type="String" Name="ParentTweetUsername" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="replyUserID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="tsp_Engagements_Result">
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="String" Name="Content" Nullable="false" MaxLength="160" />
+          <Property Type="DateTime" Name="Time" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Type" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="ProfileImage" Nullable="true" />
+          <Property Type="String" Name="Nickname" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="TweetID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="tsp_FavoriteTweets_Result">
+          <Property Type="Int32" Name="UserID" Nullable="true" />
+          <Property Type="Int32" Name="TweetID" Nullable="true" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Nickname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Content" Nullable="true" MaxLength="160" />
+          <Property Type="DateTime" Name="TweetDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="TweetImg" Nullable="true" />
+          <Property Type="String" Name="ProfileImage" Nullable="true" />
+          <Property Type="Int32" Name="likeCount" Nullable="true" />
+          <Property Type="Int32" Name="retweetCount" Nullable="true" />
+          <Property Type="String" Name="ParentTweetUsername" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="replyUserID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="tsp_getConversationDM_Result">
+          <Property Type="Int32" Name="SenderID" Nullable="false" />
+          <Property Type="String" Name="Content" Nullable="false" MaxLength="Max" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="tsp_GetTweet_Result">
+          <Property Type="Int32" Name="UserID" Nullable="true" />
+          <Property Type="Int32" Name="TweetID" Nullable="true" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Nickname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Content" Nullable="true" MaxLength="160" />
+          <Property Type="DateTime" Name="TweetDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ProfileImage" Nullable="true" />
+          <Property Type="String" Name="TweetImg" Nullable="true" />
+          <Property Type="Int32" Name="likeCount" Nullable="true" />
+          <Property Type="Int32" Name="retweetCount" Nullable="true" />
+          <Property Type="String" Name="ParentTweetUsername" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="replyUserID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="tsp_LatestMessage_Result">
+          <Property Type="String" Name="Content" Nullable="false" MaxLength="Max" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="SenderID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="tsp_ReplyCount_Result">
+          <Property Type="Int32" Name="TweetID" Nullable="true" />
+          <Property Type="Int32" Name="ReplyCount" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="tsp_UserLikedTweets_Result">
+          <Property Type="Int32" Name="UserID" Nullable="true" />
+          <Property Type="Int32" Name="TweetID" Nullable="true" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Nickname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Content" Nullable="true" MaxLength="160" />
+          <Property Type="String" Name="TweetImg" Nullable="true" />
+          <Property Type="DateTime" Name="TweetDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ProfileImage" Nullable="true" />
+          <Property Type="Int32" Name="likeCount" Nullable="true" />
+          <Property Type="Int32" Name="retweetCount" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="tsp_UserMentions_Result">
+          <Property Type="Int32" Name="userID" Nullable="true" />
+          <Property Type="Int32" Name="tweetID" Nullable="true" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Nickname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="TweetImg" Nullable="true" />
+          <Property Type="String" Name="TweetContent" Nullable="true" MaxLength="160" />
+          <Property Type="DateTime" Name="TweetDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ProfileImage" Nullable="true" />
+          <Property Type="Int32" Name="likeCount" Nullable="true" />
+          <Property Type="Int32" Name="retweetCount" Nullable="true" />
+          <Property Type="String" Name="UsernameMention" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="userReplyID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="tsp_UserTweets_Result">
+          <Property Type="Int32" Name="UserID" Nullable="true" />
+          <Property Type="Int32" Name="TweetID" Nullable="true" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Nickname" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Content" Nullable="true" MaxLength="160" />
+          <Property Type="String" Name="TweetImg" Nullable="true" />
+          <Property Type="DateTime" Name="TweetDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ProfileImage" Nullable="true" />
+          <Property Type="Int32" Name="likeCount" Nullable="true" />
+          <Property Type="Int32" Name="retweetCount" Nullable="true" />
+          <Property Type="String" Name="ParentTweetUsername" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="replyUserID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="tsp_WordCount_Result">
+          <Property Type="String" Name="word" Nullable="true" />
+          <Property Type="Int32" Name="count" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TwitterDBModelStoreContainer" CdmEntityContainer="TwitterDBEntities">
+          <EntitySetMapping Name="Conversations">
+            <EntityTypeMapping TypeName="TwitterDBModel.Conversations">
+              <MappingFragment StoreEntitySet="Conversations">
+                <ScalarProperty Name="ConversationID" ColumnName="ConversationID" />
+                <ScalarProperty Name="User1ID" ColumnName="User1ID" />
+                <ScalarProperty Name="User2ID" ColumnName="User2ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="TwitterDBModel.Countries">
+              <MappingFragment StoreEntitySet="Countries">
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DirectMessages">
+            <EntityTypeMapping TypeName="TwitterDBModel.DirectMessages">
+              <MappingFragment StoreEntitySet="DirectMessages">
+                <ScalarProperty Name="DirectMessageID" ColumnName="DirectMessageID" />
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+                <ScalarProperty Name="ReceiverID" ColumnName="ReceiverID" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="ConversationID" ColumnName="ConversationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Favorites">
+            <EntityTypeMapping TypeName="TwitterDBModel.Favorites">
+              <MappingFragment StoreEntitySet="Favorites">
+                <ScalarProperty Name="FavoriteID" ColumnName="FavoriteID" />
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FavoriteTime" ColumnName="FavoriteTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FavoriteTweets">
+            <EntityTypeMapping TypeName="TwitterDBModel.FavoriteTweets">
+              <MappingFragment StoreEntitySet="FavoriteTweets">
+                <ScalarProperty Name="FavoriteTweetID" ColumnName="FavoriteTweetID" />
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mentions">
+            <EntityTypeMapping TypeName="TwitterDBModel.Mentions">
+              <MappingFragment StoreEntitySet="Mentions">
+                <ScalarProperty Name="MentionID" ColumnName="MentionID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+                <ScalarProperty Name="TweetMentionID" ColumnName="TweetMentionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Retweets">
+            <EntityTypeMapping TypeName="TwitterDBModel.Retweets">
+              <MappingFragment StoreEntitySet="Retweets">
+                <ScalarProperty Name="RetweetID" ColumnName="RetweetID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+                <ScalarProperty Name="RetweetTime" ColumnName="RetweetTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tweets">
+            <EntityTypeMapping TypeName="TwitterDBModel.Tweets">
+              <MappingFragment StoreEntitySet="Tweets">
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="TweetImg" ColumnName="TweetImg" />
+                <ScalarProperty Name="TweetDate" ColumnName="TweetDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="TwitterDBModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="HeaderImage" ColumnName="HeaderImage" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsersFollowing">
+            <EntityTypeMapping TypeName="TwitterDBModel.UsersFollowing">
+              <MappingFragment StoreEntitySet="UsersFollowing">
+                <ScalarProperty Name="FollowingID" ColumnName="FollowingID" />
+                <ScalarProperty Name="FollowerID" ColumnName="FollowerID" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="tsp_AllTweets" FunctionName="TwitterDBModel.Store.tsp_AllTweets">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TwitterDBModel.tsp_AllTweets_Result">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="TweetDate" ColumnName="TweetDate" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="TweetImg" ColumnName="TweetImg" />
+                <ScalarProperty Name="likeCount" ColumnName="likeCount" />
+                <ScalarProperty Name="retweetCount" ColumnName="retweetCount" />
+                <ScalarProperty Name="ParentTweetUsername" ColumnName="ParentTweetUsername" />
+                <ScalarProperty Name="replyUserID" ColumnName="replyUserID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="tsp_AllTweetsEveryone" FunctionName="TwitterDBModel.Store.tsp_AllTweetsEveryone">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TwitterDBModel.tsp_AllTweetsEveryone_Result">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="TweetImg" ColumnName="TweetImg" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="TweetDate" ColumnName="TweetDate" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="likeCount" ColumnName="likeCount" />
+                <ScalarProperty Name="retweetCount" ColumnName="retweetCount" />
+                <ScalarProperty Name="ParentTweetUsername" ColumnName="ParentTweetUsername" />
+                <ScalarProperty Name="replyUserID" ColumnName="replyUserID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="tsp_Engagements" FunctionName="TwitterDBModel.Store.tsp_Engagements">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TwitterDBModel.tsp_Engagements_Result">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="tsp_FavoriteTweets" FunctionName="TwitterDBModel.Store.tsp_FavoriteTweets">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TwitterDBModel.tsp_FavoriteTweets_Result">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="TweetDate" ColumnName="TweetDate" />
+                <ScalarProperty Name="TweetImg" ColumnName="TweetImg" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="likeCount" ColumnName="likeCount" />
+                <ScalarProperty Name="retweetCount" ColumnName="retweetCount" />
+                <ScalarProperty Name="ParentTweetUsername" ColumnName="ParentTweetUsername" />
+                <ScalarProperty Name="replyUserID" ColumnName="replyUserID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="tsp_getConversationDM" FunctionName="TwitterDBModel.Store.tsp_getConversationDM">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TwitterDBModel.tsp_getConversationDM_Result">
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="tsp_GetTweet" FunctionName="TwitterDBModel.Store.tsp_GetTweet">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TwitterDBModel.tsp_GetTweet_Result">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="TweetDate" ColumnName="TweetDate" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="TweetImg" ColumnName="TweetImg" />
+                <ScalarProperty Name="likeCount" ColumnName="likeCount" />
+                <ScalarProperty Name="retweetCount" ColumnName="retweetCount" />
+                <ScalarProperty Name="ParentTweetUsername" ColumnName="ParentTweetUsername" />
+                <ScalarProperty Name="replyUserID" ColumnName="replyUserID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="tsp_LatestMessage" FunctionName="TwitterDBModel.Store.tsp_LatestMessage">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TwitterDBModel.tsp_LatestMessage_Result">
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="tsp_ReplyCount" FunctionName="TwitterDBModel.Store.tsp_ReplyCount">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TwitterDBModel.tsp_ReplyCount_Result">
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+                <ScalarProperty Name="ReplyCount" ColumnName="ReplyCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="tsp_UserLikedTweets" FunctionName="TwitterDBModel.Store.tsp_UserLikedTweets">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TwitterDBModel.tsp_UserLikedTweets_Result">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="TweetImg" ColumnName="TweetImg" />
+                <ScalarProperty Name="TweetDate" ColumnName="TweetDate" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="likeCount" ColumnName="likeCount" />
+                <ScalarProperty Name="retweetCount" ColumnName="retweetCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="tsp_UserMentions" FunctionName="TwitterDBModel.Store.tsp_UserMentions">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TwitterDBModel.tsp_UserMentions_Result">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="tweetID" ColumnName="tweetID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="TweetImg" ColumnName="TweetImg" />
+                <ScalarProperty Name="TweetContent" ColumnName="TweetContent" />
+                <ScalarProperty Name="TweetDate" ColumnName="TweetDate" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="likeCount" ColumnName="likeCount" />
+                <ScalarProperty Name="retweetCount" ColumnName="retweetCount" />
+                <ScalarProperty Name="UsernameMention" ColumnName="UsernameMention" />
+                <ScalarProperty Name="userReplyID" ColumnName="userReplyID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="tsp_UserTweets" FunctionName="TwitterDBModel.Store.tsp_UserTweets">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TwitterDBModel.tsp_UserTweets_Result">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TweetID" ColumnName="TweetID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="TweetImg" ColumnName="TweetImg" />
+                <ScalarProperty Name="TweetDate" ColumnName="TweetDate" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="likeCount" ColumnName="likeCount" />
+                <ScalarProperty Name="retweetCount" ColumnName="retweetCount" />
+                <ScalarProperty Name="ParentTweetUsername" ColumnName="ParentTweetUsername" />
+                <ScalarProperty Name="replyUserID" ColumnName="replyUserID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="tsp_WordCount" FunctionName="TwitterDBModel.Store.tsp_WordCount">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TwitterDBModel.tsp_WordCount_Result">
+                <ScalarProperty Name="word" ColumnName="word" />
+                <ScalarProperty Name="count" ColumnName="count" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

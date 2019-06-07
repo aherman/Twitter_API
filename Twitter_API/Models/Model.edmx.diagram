@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7ecd22d857524b0780cf5de285462a1f" Name="Diagram1">
+        <EntityTypeShape EntityType="TwitterDBModel.Conversations" Width="1.5" PointX="5.25" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="TwitterDBModel.Countries" Width="1.5" PointX="0.75" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TwitterDBModel.DirectMessages" Width="1.5" PointX="7.5" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TwitterDBModel.Favorites" Width="1.5" PointX="7.5" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TwitterDBModel.FavoriteTweets" Width="1.5" PointX="7.5" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TwitterDBModel.Mentions" Width="1.5" PointX="10.5" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TwitterDBModel.Retweets" Width="1.5" PointX="10.5" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TwitterDBModel.Tweets" Width="1.5" PointX="5.25" PointY="22.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TwitterDBModel.Users" Width="1.5" PointX="3" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TwitterDBModel.UsersFollowing" Width="1.5" PointX="5.25" PointY="26.5" IsExpanded="true" />
+        <AssociationConnector Association="TwitterDBModel.fk_DirectMessages_ConversationID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_DirectMessages_User1ID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_DirectMessages_User2ID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_Users_CountryID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_DirectMessages_ReceiverID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_DirectMessages_SenderID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_Favorites_TweetID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_Favorites_UserID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_FavoriteTweets_TweetID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_FavoriteTweets_UserID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_Mentions_TweetID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_Mentions_TweetMentionID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_Mentions_UserID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_Retweets_TweetID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_Retweets_UserID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_Tweets_UserID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_UsersFollowing_FollowerID" ManuallyRouted="false" />
+        <AssociationConnector Association="TwitterDBModel.fk_UsersFollowing_FollowingID" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
